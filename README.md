@@ -1,4 +1,4 @@
 # BDS522_FinalProject
 
-About demographic data and the housing market (using historical prices)in New York City. 
+Statistical Analysis: about demographic data and the housing market (using historical prices) in New York City. 
 
