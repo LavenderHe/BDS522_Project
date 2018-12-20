@@ -1,0 +1,178 @@
+---
+title: "Data"
+---
+
+Data of the project are Zip.csv and FamilyHome_Sales.csv (See introdution for more information)
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(ggplot2)
+library(lattice)
+library(latexpdf)
+Zipcode<- read.csv("Zipcode.csv")
+FHS <- read.csv("FamilyHome_Sales.csv")
+attach(Zipcode)
+attach(FHS)
+```
+
+## Data Analysis 
+The data analysis part contains two datasets using descriptive analysis, data visualization and more inferentialv statistical analyses
+
+
+###Descriptive Analysis + Data visualization 
+
+Since datasets are already loaded. The first step is to use the summary function to conclude the number of males and females in the zipcode file. 
+
+Five-factor summary of the count of males
+```{r}
+summary(Zipcode$COUNT.MALE)
+```
+Five-factor summary of the count of females
+```{r}
+summary(Zipcode$COUNT.FEMALE)
+```
+
+Five-factor summary of the count of Asian, Non Hispanic
+```{r}
+summary(Zipcode$COUNT.ASIAN.NON.HISPANIC)
+```
+Five-factor summary of the count of Black, Non Hispanic
+```{r}
+summary(Zipcode$COUNT.BLACK.NON.HISPANIC)
+```
+
+-------------------------------------------------------------------------------------------------------------
+Five-factor summary of Averagae Housing Sale Price in NYC (2009)
+```{r}
+summary(FHS$AVERAGE.SALE.PRICE)
+```
+
+Five-factor summary of Lowest Housing Sale Price in NYC (2009)
+```{r}
+summary(FHS$LOWEST.SALE.PRICE)
+```
+
+Five-factor summary of Highest Housing Sale Price in NYC (2009)
+```{r}
+summary(FHS$HIGHEST.SALE.PRICE)
+```
+
+Use ggplot to the distribution of totoal number of properties vs. number of sales in NYC (2009)
+```{r}
+p <- ggplot(FHS, aes(TOTAL.NO..OF.PROPERTIES,NUMBER.OF.SALES))
+p + geom_point(colour = "red", size = 1.5)
+```
+Use ggplot to the distribution of lowest sale prices vs. type of home (2009)
+```{r}
+ggplot(FHS, aes(x = TYPE.OF.HOME, y = LOWEST.SALE.PRICE)) +
+  geom_point(size = 2, shape = 23)
+```
+Use ggplot to the distribution of median sale prices vs. type of home (2009)
+```{r}
+ggplot(FHS, aes(x = TYPE.OF.HOME, y = MEDIAN.SALE.PRICE)) +
+  geom_point(size = 2, shape = 20)
+```
+Use ggplot to the distribution of highest sale prices vs. type of home (2009)
+```{r}
+ggplot(FHS, aes(x = TYPE.OF.HOME, y = HIGHEST.SALE.PRICE)) +
+  geom_point(size = 2, shape = 20)
+```
+
+Use ggplot to the distribution of average sale prices vs. type of home (2009)
+```{r}
+ggplot(FHS, aes(x = TYPE.OF.HOME, y = AVERAGE.SALE.PRICE)) +
+  geom_point(size = 2, shape = 20)
+```
+
+-------------------------------------------------------------------------------------------------------------
+Display the histogram of the percent of Asian
+```{r}
+hist(Zipcode$PERCENT.ASIAN.NON.HISPANIC, breaks = 6, col = "Blue")
+```
+Display the histogram of the percent of Black
+```{r}
+hist(Zipcode$PERCENT.BLACK.NON.HISPANIC, breaks = 6, col = "Blue")
+```
+Display the histogram of the percent of US Citizens
+```{r}
+hist(Zipcode$PERCENT.US.CITIZEN, breaks = 6, col = "Blue")
+```
+-------------------------------------------------------------------------------------------------------------
+
+##Inferential Statistical Analyses 
+
+###Correlation, Regression, t-test, Wilcox Test, ANOVA, Cumulative Distribution
+
+Find the correlation between the number of female and male
+```{r}
+cor(Zipcode$COUNT.FEMALE,Zipcode$COUNT.MALE)
+```
+
+Conduct a regression analysis of the number of citizen and the number of males
+```{r}
+lm(Zipcode$COUNT.US.CITIZEN~Zipcode$COUNT.MALE)
+```
+Multiple Regression of percent of citizen total, percent of feamle, percent of pacific islander and percent of public assistance total
+```{r}
+lm(Zipcode$PERCENT.CITIZEN.STATUS.TOTAL~ Zipcode$PERCENT.FEMALE + Zipcode$PERCENT.PACIFIC.ISLANDER + Zipcode$PERCENT.PUBLIC.ASSISTANCE.TOTAL)
+```
+Conduct a two sample t-test of the number of American Indian and Asian Non Hispanic
+```{r}
+t.test(Zipcode$COUNT.AMERICAN.INDIAN,Zipcode$COUNT.ASIAN.NON.HISPANIC)
+```
+Conduct a two sample t-test of the number of black non hispanic and white non hispanic
+```{r}
+t.test(Zipcode$COUNT.BLACK.NON.HISPANIC, Zipcode$COUNT.WHITE.NON.HISPANIC)
+```
+Conduct a Rank sum test of the number of males and females 
+```{r}
+wilcox.test(Zipcode$COUNT.MALE, Zipcode$COUNT.FEMALE)
+```
+Conduct a rank sum test of the number of people who receives the public assistance and those people who do not receive
+```{r}
+wilcox.test(Zipcode$COUNT.RECEIVES.PUBLIC.ASSISTANCE, Zipcode$COUNT.NRECEIVES.PUBLIC.ASSISTANCE)
+```
+Find the difference between the number of people who receives the public assistance and those people who do not receive 
+```{r}
+DiffPubAssist <- setdiff(Zipcode$COUNT.RECEIVES.PUBLIC.ASSISTANCE, Zipcode$COUNT.NRECEIVES.PUBLIC.ASSISTANCE)
+```
+
+Conduct a sign test 
+```{r}
+wilcox.test(DiffPubAssist)
+```
+Conduct a ANOVA test using the percent of Asians and Americans
+```{r}
+aov(PERCENT.ASIAN.NON.HISPANIC ~ PERCENT.AMERICAN.INDIAN, data=Zipcode)
+```
+
+Cumulative distribution function of Count Participants
+```{r}
+pnorm(Zipcode$COUNT.PARTICIPANTS)
+```
+-------------------------------------------------------------------------------------------------------------
+Conduct a rank sum testof houses with lowest sales price and highest sales price
+```{r}
+wilcox.test(FHS$LOWEST.SALE.PRICE, FHS$HIGHEST.SALE.PRICE)
+```
+Conduct a rank sum test of houses with lowest sales price and average sales price
+```{r}
+wilcox.test(FHS$AVERAGE.SALE.PRICE, FHS$LOWEST.SALE.PRICE)
+```
+
+Conduct a rank sum test of houses with highest sales price and average sales price
+```{r}
+wilcox.test(FHS$AVERAGE.SALE.PRICE, FHS$HIGHEST.SALE.PRICE)
+```
+
+Conduct a two sample t-test of houses with highest sales price and average sales price
+```{r}
+t.test(FHS$AVERAGE.SALE.PRICE,FHS$HIGHEST.SALE.PRICE)
+```
+
+Conduct a two sample t-test of houses with lowest sales price and average sales price
+```{r}
+t.test(FHS$AVERAGE.SALE.PRICE,FHS$LOWEST.SALE.PRICE)
+```

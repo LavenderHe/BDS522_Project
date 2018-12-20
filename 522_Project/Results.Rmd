@@ -1,0 +1,50 @@
+---
+title: "Results"
+---
+##Results
+
+
+Based on the data analysis of the dataset, Zipcode, there are interesting results based on the demographic data. 
+Data visualization shows the distribution median sales in different graphs
+(See data.html for details)
+
+Plot to show the differeny types of home and median sale prices:
+`ggplot(FHS, aes(x = TYPE.OF.HOME, y = MEDIAN.SALE.PRICE)) + geom_point(size = 2, shape = 20)`
+
+Plot to show the median sale price using histogram: `qplot(FHS$MEDIAN.SALE.PRICE, geom="histogram")`
+Plot to show the lowest sale price using histogram: `qplot(FHS$LOWEST.SALE.PRICE, geom="histogram")`
+Plot to show the highest sale price using histogram: `qplot(FHS$HIGHEST.SALE.PRICE, geom="histogram") `
+
+Multiple regression can be generated using parameter of the Zipcode dataset. 
+
+`lm(Zipcode$PERCENT.CITIZEN.STATUS.TOTAL~ Zipcode$PERCENT.FEMALE + Zipcode$PERCENT.PACIFIC.ISLANDER + Zipcode$PERCENT.PUBLIC.ASSISTANCE.TOTAL)`
+
+
+There are limited number of housing prices listed for each category. The exisying sale prices from each category has a discontinuous distribution, which need to more data to support. 
+Through conducting t-test and wilcox test using different groups, the results with p-values less than 0.05 (statistical significance) in the Family House Sales Dataset are:
+
+1. houses with lowest sales price and average sales price
+2. houses with lowest sales price and highest sales price
+
+
+For example, `t.test(Zipcode$COUNT.AMERICAN.INDIAN,Zipcode$COUNT.ASIAN.NON.HISPANIC)`, the p-value indicates that it is statistical signficiant relatonship between the count of American Indian and the count of Asian Non Hispanic. The means of two ethical groups (their total count) are not the same. 
+
+Through conducting t test and wilcox test using different groups, the results with p-values less than 0.05 (statistical significance) in the Demographic Zipcode Dataset are: 
+1. The number of people who receives the public assistance and those people who do not receive 
+2. the number of black non hispanic and white non hispanic
+3. the number of American Indian and Asian Non Hispanic
+
+
+
+###Conclusion
+The data analyses calculate the test statistics and results follow commonsense which means datasets are not biased and datapoints are collected represently of population in New York City. The diversification is reflected by both datasets with different demograhpic groups and varied distributions of housing price (three types). It is clearly to see that the housing market in the New York City considers a wide range of factors to ensure it run smoothly. The ratio of ethnicity groups, gender, US citizenships status, public assistance and others are not heavily skewed. 
+
+
+
+###Limitation
+  Due to limitation of the public dataset, such as only record information of one certain year. More demographic information are perferred for further analysis. Different ethnicial groups are emphasized in this dataset. More data from the same open source is better to be organized which is convinent to join different types of information together. More datasets can be gathered to find out the diversity of major cities. 
+
+
+###Future Research
+  Based on the conclusion and limitation of this project, futher research should focus on specific regions in cities other than New York City and collect more accurate (multiple years) to demostrate the difference.For regional census data, count and percentage are benefical to be included together, information each as age and household incomes are better to included as well.
+
